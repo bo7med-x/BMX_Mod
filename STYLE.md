@@ -1,4 +1,4 @@
-# MiscMod Coding Style Guide
+# BMX_Mod Coding Style Guide
 
 In order to maintain consistency within the project, please maintain the
 following coding style guidelines.

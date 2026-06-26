@@ -1,274 +1,182 @@
-# CoDaM MiscMod
+# BMX_Mod
 
-MiscMod is a CoDaM PowerServer replacement aimed at improving stability and adding some different kind of features to CoDaM.
+BMX_Mod is a fork of CoDaM MiscMod, rebranded and extended for the V3NOM server community. It adds new commands, renames existing ones, and cleans up the original codebase.
 
-## DONATE
+Based on [MiscMod by Cato](https://cod.pm/guide/d0da8d/installing-and-configuring-codam-miscmod).
 
-<img src="https://raw.githubusercontent.com/cato-a/CoDaM_MiscMod/main/MiscMod-donation+xmr.png" title="XMR donation to support MiscMod" alt="XMR donation to support MiscMod">
-
-`monero:86SoU8D73vhSxbwRsHFMvYjcVcW21VBxSRazt9RD6eHkWYXvqjoWPJ3JPSmT7VKp93KG3Zy7k4NtgiHjxXrL7u7BM1gnEeW`
+---
 
 ## HOW TO INSTALL
 
 Edit `codam/modlist.gsc`:
-```
 level.topText = &"<your text>";
-[[ register ]]( "Cato's MiscMod", codam\miscmod::main );
-```
 
-Files `miscmod_bans.dat` and `miscmod_reports.dat` must be created in the main folder and writeable by the server (or it will crash).
-The ban capabilities is low level and intended only for small servers or single standalone servers.
+[[ register ]]( "BMX_Mod", codam\miscmod::main );
 
-**NOTE:** Must be loaded before CoDaM_HamGoodies due to conflicting takeover (or any other mod for that matter).
-This mod is not made compatible with other mods and only compatible with the latest [CoDExtended](https://github.com/xtnded/codextended).
+The files `bmx_bans.dat` and `bmx_reports.dat` must be created in the main folder and be writeable by the server (or it will crash).
 
-A full guide on how to configure and setup MiscMod can be found on [cod.pm](https://cod.pm/guide/d0da8d/installing-and-configuring-codam-miscmod).
+**NOTE:** Must be loaded before CoDaM_HamGoodies due to conflicting takeover (or any other mod).
+This mod is only compatible with the latest [CoDExtended](https://github.com/xtnded/codextended).
+
+---
 
 ## CONFIGURATION
 
-Some settings may support appending postfix to CVAR; such as `"scr_mm_spawnprotection_<MAP/GAMETYPE> <value>"` resulting in `"scr_mm_spawnprotection_dm <value>" or "scr_mm_spawnprotection_mp_brecourt <value>"`.
+Some settings support appending a postfix to the CVAR, such as:
+`"scr_mm_spawnprotection_<MAP/GAMETYPE> <value>"`
 
-See `CoDaM_MiscMod.cfg` file for CVAR documentation.
+See `CoDaM_MiscMod.cfg` for full CVAR documentation.
 
-## MISCMOD_BANS.DAT
+---
 
-Before running one of the below command make a backup of your `miscmod_bans.dat` file:
+## BMX_BANS.DAT
 
-```bash
-mv miscmod_bans.dat miscmod_bans.backup.dat
-```
-
-### Upgrade `miscmod_bans.dat` file format from MiscMod 3.0.9 to newer MiscMod
-
-This command upgrades the `miscmod_bans.dat` to the new format and also remove duplicate and invalid IP's.
+Before running any of the commands below, back up your ban file:
 
 ```bash
-awk 'BEGIN {FS="%";OFS=FS} NF==4&&$1~/^[0-9]+\./&&!ip[$1]++{print $1,$4,$2,0,0,$3}' miscmod_bans.backup.dat > miscmod_bans.dat
+mv bmx_bans.dat bmx_bans.backup.dat
 ```
 
-### Remove duplicate bans and invalid IP's from `miscmod_bans.dat` file
-
-This command remove duplicate and invalid IP's from both the old and the new `miscmod_bans.dat` file.
+### Upgrade ban file format from MiscMod 3.0.9 to BMX_Mod
 
 ```bash
-awk '$1~/^[0-9]+\./&&!ip[$1]++{print $0}' miscmod_bans.backup.dat > miscmod_bans.dat
+awk 'BEGIN {FS="%";OFS=FS} NF==4&&$1~/^[0-9]+\./&&!ip[$1]++{print $1,$4,$2,0,0,$3}' bmx_bans.backup.dat > bmx_bans.dat
 ```
+
+### Remove duplicate and invalid IPs
+
+```bash
+awk '$1~/^[0-9]+\./&&!ip[$1]++{print $0}' bmx_bans.backup.dat > bmx_bans.dat
+```
+
+---
 
 ## COMMANDS
 
-NOTE: `<num>` can be replaced with text (e.g a playername) and a player number will be matched based on the string.
+`<num>` can be replaced with a player name and will be matched by string.
+Command:                                    Description:                                         Permission ID:
+!login <user> <pass>                        Login to access commands.                            0
+!help                                       Display available commands.                          1
+!version                                    Display BMX_Mod version.                             2
+!name <new name>                            Change your name.                                    3
+!fov <value>                                Set field of view (80-95).                           4
+!rename <num> <new name>                    Rename a player.                                     5
+!logout                                     Logout from session.                                 6
+!say <message>                              Broadcast admin message with group prefix.           7
+!saym <message>                             Print message on screen (center).                    8
+!sayo <message>                             Print message in obituary.                           9
+!kick <num> (reason)                        Kick a player.                                       10
+!reload                                     Reload BMX_Mod config.                               11
+!restart (*)                                Restart map (soft).                                  12
+!end                                        End the map.                                         13
+!map <mapname> (gametype)                   Change map and gametype.                             14
+!status                                     List players and info.                               15
+!mute <num|list>                            Mute a player.                                       16
+!unmute <num>                               Unmute a player.                                     17
+!warn <num> <message>                       Warn a player.                                       18
+!kill <num>                                 Kill a player.                                       19
+!weapon <num> <weapon>                      Give a weapon to a player.                           20
+!heal <num>                                 Heal a player.                                       21
+!invisible <on|off>                         Toggle invisibility.                                 22
+!ban <num> <time> <reason>                  Ban a player.                                        23
+!unban <ip|index>                           Unban a player.                                      24
+!pm <player> <message>                      Send a private message.                              25
+!re <message>                               Reply to last PM.                                    26
+!who                                        Show logged in admins.                               27
+!drop <num> (height)                        Drop a player.                                       28
+!prone <num> (time)                         Force a player to prone (spank).                     29
+!slap <num> (damage)                        Slap a player.                                       30
+!blind <num> (time)                         Blind a player.                                      31
+!runover <num>                              Run over a player with a tank.                       32
+!squash <num>                               Squash a player with a barge.                        33
+!toilet <num> (time)                        Turn a player into a toilet.                         34
+!explode <num>                              Explode a player.                                    35
+!mortar <num>                               Drop mortars on a player.                            36
+!matrix                                     Activate matrix mode.                                37
+!burn <num>                                 Burn a player.                                       38
+!cow <num>                                  BBQ a player.                                        39
+!disarm <num>                               Disarm a player.                                     40
+!rocket <num>                               Launch a player like a rocket.                       41
+!spec <num|all>                             Move player(s) to spectator.                         42
+!allies <num|all>                           Move player(s) to allies.                            43
+!axis <num|all>                             Move player(s) to axis.                              44
+!swapteams (*)                              Swap both teams.                                     45
+!teambalance <on|off|force>                 Balance the teams.                                   46
+!sniper                                     Snipers only (scoped).                               47
+!allsniper                                  All snipers (scoped + non-scoped).                   48
+!allwep (*)                                 All weapons.                                         49
+!mg                                         Machine guns only.                                   50
+!rifles <on|off|only>                       Toggle rifles.                                       51
+!disableweapon <weapon> <on|off>            Disable a specific weapon.                           52
+!health <off|0|1|2|3>                       Health settings.                                     53
+!grenade <off|0|1|2|3|reset>               Grenade settings.                                    54
+!pistols <on|off|reset>                     Pistol settings.                                     55
+!1sk <on|off>                               Toggle instant kill.                                 56
+!roundlength <time>                         Set round length. (sd|re)                            57
+!psk <on|off>                               Toggle instant kill on pistols.                      58
+!meleekill <type> (...)                     Toggle instant kill on melee.                        59
+!wmap <weapon=map>                          Change CoDaM weapon map settings.                    60
+!belmenu <on|off>                           Toggle BEL menu.                                     61
+!report <num> <reason>                      Report a player.                                     62
+!rs                                         Reset your score.                                    63
+!optimize <num>                             Optimize connection settings for a player.           64
+!pcvar <num> <cvar> <value>                 Set a player CVAR.                                   65
+!scvar <cvar> <value>                       Set a server CVAR.                                   66
+!respawn <num> <sd|dm|tdm>                  Respawn a player at a new spawnpoint.                67
+!teleport <num> (<num>|<x> <y> <z>)         Teleport a player.                                   68
+!freeze <on|off> <num|all>                  Freeze player(s).                                    69
+!move <num> <u|d|l|r|f|b> <units>           Move a player in a direction.                        70
+!bansearch <query>                          Search the banlist.                                  71
+!banlist                                    List recent bans.                                    72
+!reportlist                                 List recent reports.                                 73
+!changename <on|off>                        Toggle player name changing.                         74
+!password <password|off>                    Set or remove server password.                       75
+!fps <125|250|333>                          Set your FPS.                                        76
+!dfps <on|off>                              Toggle FPS counter.                                  77
+!net                                        Optimize your connection settings.                   78
+!lagom <on|off>                             Toggle lagometer.                                    79
+!rules                                      Display server rules.                                80
+!discord                                    Display Discord link.                                81
 
-```plaintext
-Command:                              Description:                                                Permission ID:
+---
 
-!login <user> <pass>                  Login to access commands.                                   0 - always default
-!help                                 Display this help.                                          1 - default
-!version                              Display MiscMod version.                                    2 - default
-!name <new name>                      Change name.                                                3 - default
-!fov <value>                          Set field of view.                                          4 - default
-!rename <num> <new name>              Change name of a player.                                    5
-!logout                               Logout.                                                     6
-!say <message>                        Say a message with group as prefix.                         7
-!saym <message>                       Print a message in the middle of the screen.                8
-!sayo <message>                       Print a message in the obituary.                            9
-!kick <reason>                        Kick a player.                                              10
-!reload                               Reload MiscMod commands and settings.                       11
-!restart (*)                          Restart map (soft).                                         12
-!endmap                               End the map.                                                13
-!map <mapname> (gametype)             Change map and gametype.                                    14
-!status                               List players.                                               15
-!mute <num>                           Mute a player.                                              16
-!unmute <num>                         Unmute a player.                                            17
-!warn <num> <message>                 Warn a player.                                              18
-!kill <num>                           Kill a player.                                              19
-!weapon <num> <weapon>                Give a weapon to player.                                    20
-!heal <num>                           Heal a player.                                              21
-!invisible <on|off>                   Become invisible.                                           22
-!ban <num> <time> <reason>            Ban a player.                                               23
-!unban <ip>                           Unban a player.                                             24
-!pm <player> <message>                Private message a player.                                   25
-!re <message>                         Respond to a private message.                               26
-!who                                  Display logged in users.                                    27
+## SERVER CVARs (BMX-specific)
 
-!drop <num> <height>                  Drop a player.                                              28
-!spank <num> <time>                   Spank a player.                                             29
-!slap <num> <damage>                  Slap a player.                                              30
-!blind <num> <time>                   Blind a player.                                             31
-!runover <num>                        Run over a player.                                          32
-!squash <num>                         Squash a player.                                            33
-!toilet <num>                         Turn a player into a toilet.                                35
+| CVAR | Description |
+|------|-------------|
+| `scr_bmx_rule1`, `scr_bmx_rule2`, ... | Server rules displayed by `!rules` |
+| `scr_bmx_discord_link` | Discord link displayed by `!discord` |
 
-!explode <num>                        Explode a player.                                           36
-!force <axis|allies|spectator> <num|all> (...)  Force players to team.                            37
-!mortar <num>                         Mortar a player.                                            38
-!matrix                               Matrix.                                                     39
-!burn <num>                           Burn a player.                                              40
-!cow <num>                            BBQ a player.                                               41
-!disarm <num>                         Disarm a player.                                            42
+---
 
-!os                                   Snipers only.                                               43
-!aw (*)                               All weapons (1 sniper).                                     44
-!omp                                  Only machine guns.                                          45
-!rifles <on|off|only>                 Rifle settings.                                             46
-!health <off|0|1|2|3>                 Health settings.                                            47
-!grenade <off|0|1|2|3|reset>          Grenade settings.                                           48
-!pistols <on|off|reset>               Pistol settings.                                            49
-!1sk <on|off>                         Enable or disable instant kill.                             50
-!roundlength <time>                   Set roundlength. (sd|re)                                    51
-!psk <on|off>                         Enable or disable instant kill on pistols.                  52
+## CHANGES FROM MISCMOD
 
-!belmenu <on|off>                     Enable BEL menu instead of normal menu.                     53
-!report <on|off>                      Report a player.                                            54
+- Renamed to **BMX_Mod v4.0.0**
+- Ban/report files renamed to `bmx_bans.dat` and `bmx_reports.dat`
+- Chat prefix changed to `[BMX]`
+- `!spank` renamed to `!prone`
+- `!endmap` renamed to `!end`
+- `!namechange` renamed to `!changename`
+- `!os` renamed to `!sniper`
+- `!aw` renamed to `!allwep`
+- `!omp` renamed to `!mg`
+- `!force` split into dedicated `!spec`, `!allies`, `!axis` commands
+- New commands: `!rocket`, `!allsniper`, `!disableweapon`, `!password`, `!fps`, `!dfps`, `!net`, `!lagom`, `!rules`, `!discord`
+- Command IDs renumbered throughout
 
-!rs                                   Reset your scores in the scoreboard.                        56
-!optimize                             Set optimal connection settings for a player.               57
-
-!pcvar <num> <cmd> <value>            Set/modify a player CVAR.                                   58
-!respawn <num> <sd|dm|tdm>            Move a player to a new spawnpoint.                          59
-
-!wmap <wapon=map>                     Change CoDaM's weapon_map setting.                          60
-!meleekill <type> (...)               Instant kill on melee.                                      61
-!teleport <num> (<num>|<x> <y> <z>)   Teleport a player to a player or (x, y, z) coordinates.     62
-!teambalance <on|off|force>           Adjust team balance settings or force a team balance.       63
-!swapteams (*)                        Swap teams (no reset).                                      64
-!freeze <on|off> <num|all>            Freeze certain players (on the map).                        65
-!move <num> <u|d|l|r|f|b> <units>     Move player in specified direction by specified units.      66
-!scvar <cvar> <value>                 Set/modify a server CVAR.                                   67
-!bansearch <query>                    Search for bans in the banlist.                             68
-!banlist                              List most recent bans.                                      69
-!reportlist                           List most recent reports.                                   70
-!namechange <on|off>                  Turn nonamechange on/off.                                   71
-```
+---
 
 ## CREDITS
 
-- MiscMod made by Cato
+- BMX_Mod fork by BO7MEDX
+- Original MiscMod by Cato
 - Mapvote based on DaMoLe's mapvote for CoD2
 - Spawnfix based on LaZy's spawnfix for jump server
-- Some 'fun' admin commands based on Cheese's admin commands
-- Some 'fun' admin commands based on PowerServer's commands
-- BEL menus based on, in some parts on code by Indy's endless menu
-- CVAR `scr_mm_scoreboard_text` uses code from Defected (dftd)
+- Fun admin commands based on Cheese's and PowerServer's commands
+- BEL menus based in part on code by Indy's endless menu
+- `scr_mm_scoreboard_text` uses code from Defected (dftd)
 
-## CHANGELOG
+## COMMUNITY
 
-3.0.9+
-* **Going forward check git commit history/releases for changes**
-
-3.0.8
-* Added new command `!teambalance <on|off|force>`
-* Added new command `!swapteams`
-* Fixes a bug in meleefight where people can drop their weapons right before the fight starts and pick it up again
-* Added new command `!freeze <on|off> <num|all>`
-* Corrected CVAR `scr_mm_msg1` and `2`, in `MiscMod.cfg`, to `scr_mm_msgb1` and `scr_mm_msgb2`
-* Added CVAR `scr_mm_emptymap`. When server is empty, switch to this map
-* Added CVAR `scr_mm_rename` and `scr_mm_renameto` which will rename a connecting player to a fixed name based on keywords
-* Added CVAR `scr_mm_removemaps_playercount`
-* Fix bug where a `!command <num>` would cause crash in some cases, discoverd by Frisky, reported and tested by AJ
-
-3.0.7
-* Adjusted `!pistols` command to include "chamber" or "clip" in case you want it to reload or not on spawn (`set scr_mm_allow_pistols_ammotype ""`)
-* Added new CVAR `scr_mm_meleekill_ignore` (values: `bolt`, `secondary`, `primary`, `grenade`). Requested by AJ
-* Improved `!mute` command with "list", to see muted players. (e.g `!mute list`)
-* Fixes bug with `!mute` command where some player ID was name causing some of the mutes not to be saved across maps
-* Fixes a typo in `!wmap` description
-* Fixes banned player display "Disconnected" instead of "Banned" when banned
-* Added new command `!teleport <player> (<player>|<x> <y> <z>)`
-* Fixes players getting stuck when spawning/moving to a player position, revamp of old code used to fix blocked spawnpoints etc
-
-3.0.6
-* Fixes rare race condition introduced in 3.0.5 for `!unban` command
-* Added new command `!wmap` to adjust CoDaM's weaponmap feature
-* Improvements to `!pistols` command, new arguments: `on`, `empty`, `disable` or a number of bullets in the chamber (e.g `!pistols 3`, for 3 bullets)
-* Minor adjustment to some commands code
-* Improvements to `validate_number()` function
-* Adjustments to BEL menu code
-* Workaround for CoDaM's weapon map code that force `noMap` under some conditions (`set scr_mm_wmap_force "1"` to enable) (the code is very hacky, don't use if you don't have to). Requested by TheGreatGatsby the ungrateful
-* Added new command `!meleekill <on|off>` to change instant kill on melee
-
-3.0.5
-* Need latest version of `codextended.so`: https://github.com/xtnded/codextended/blob/stable/bin/codextended.so
-* Cleanup some unused and commented code
-* Improvements to ban detection, banfile loading and `!ban`/`!unban` commands
-* Added dftd's `serverName()` function (e.g `scr_mm_scoreboard_text "^2My Server"` or change to `"namefix"` to remove squares and illegal chars)
-
-3.0.4
-* Added chat anti-spam. Requested by TheGreatGatsby
-* Fixes a bug with `!unban` command
-
-3.0.3
-* Updated `!who` and playerlist (when multiple matches found) to be more readable like `!status`
-* Fixes spawncamper headicon not displaying properly
-* Added `scr_mm_meleekill` for instant kill on melee
-
-3.0.2
-* Added `!respawn` command. This command will not respawn the player in full, just move the player to a new fresh spawnpoint (e.g to free stuck players)
-* Updated output of `!status` command to be more readable
-* Updated `!weapon` command to support partial names, grenades and pistols (e.g `!weapon 5 nagant_sniper`). Requested by hehu
-* Improved spawn protection with new code from funmod
-* Fixes server crash on player disconnect using some of Cheese's commands
-
-3.0.1
-* Added additional cvars to `scr_mm_cmd_maps`, you can now append 1, 2, 3, etc at end for more maps (e.g `"scr_mm_cmd_maps1"`)
-* Optimized `namefix()` function
-
-2.7.9
-* Commands have new numbers, permissions must be updated
-* Fixes issue with 999 kicker and clients download maps (999 kicker auto disables)
-* Fixes bug in `strTok` function that causes a crash on double, tripple delimiters, etc
-* Recoded `msgBroadcast` function to follow a queue of messages regardless or round/map changes
-* Added `!pcvar` command
-* Removed `!fps` command (can be used with `!pcvar` instead, e.g `!pcvar <num> fps 125`)
-* Fixes `!help` command booting client after 85+ commands
-
-2.7.8
-* Fixes bug regarding banfile (does not happen in normal mode, only developer)
-* Fixes bug with localized string, hud, freezing on menu
-* Added an extra check to `!re` command
-* Added `!report` that writes to `miscmod_reports.dat` (copy from momo74 code, which is basically my code)
-* Fixes bug with BEL menu
-* Added `scr_mm_badwords<1,2,...>` CVAR and badwords - requested by ImNoob
-* Added `scr_mm_badwords_checknames` to check if also names contain badwords
-* Added `!rs`, `!fps`, `!optimize` commands by momo74
-* Added minor tweaks to INFO messages by momo74
-* Added `!plist` command, it does the same as momo74's `!num` command, which does the same as `!status` command without IP address
-* Added logging to `!unban` and commands (to console/logfile)
-
-2.7.7
-* Added logging to `!login` command, now server admin can see who is using the `!login` command
-* Added server messages that can be broadcast to console, center or obituary
-
-2.7.6
-* Fixes issue when `scr_mm_nnn` is set to 0 and instant drop client. When set to 0, it will now disable the 999 check.
-* Fixes issue with bel menu not working when having rcon tool in game client
-* Fixes issue with instantkill and pistolkill instantly kill people using melee
-* Fixes issues with !help displaying more than 60 commands
-* Added `!ban <num|name|ip> <reason> [<specify this argument to enable IP ban>]` to old `!ban` command
-
-2.7.5
-* Added 1 shot kill pistol option
-* Added `!psk` command
-* Added optional show IP in `!status` command
-* Integrated Endless Menu into MiscMod per requests
-* Changed the bottom MiscMod version text
-* Added `!belmenu` command
-
-2.7.4
-* Spawn protection
-* RCM compatibility
-
-2.7.3
-* Commands have new numbers, permissions must be updated
-* Added `!who` command to display who is logged in
-* Added `!pm` command
-* Added `!re` command
-* Added 999 kicker based on timer
-
-2.7.2
-* Added option for rifles only to `!rifles` command
-* Fixes problem with instantkill and damagemarker enabled at the same time (negative value)
-* Minor code cleanup
-
-2.7.1
-* Fixes bug with current working directory, default is now set to `fs_basepath` + `"/main/"`
-* New CVAR to specify a different working directory or share the same directory
+- **Discord:** [V3NOM Community](https://discord.gg/VwZhDcbehx)
+- **Contact:** [@bo7medx](https://discord.com/users/bo7medx)

@@ -1,5 +1,6 @@
 /********************************************
     Miscellaneous things for CoDaM by Cato
+    Modified & Updated By BO7MEDX
     See README file for details
 ********************************************/
 
@@ -126,9 +127,9 @@ _load()
     // pair has unmatching types 'localized string' and 'localized string'
     // Reported by ImNoob
     if(!isDefined(level.topText))
-        level.topText = &"^1MiscMod ^3v3.1.5";
+        level.topText = &"^1BMXMOD ^3v4.0.0";
 
-    level.originalBottomText = &"^1+ ^5MiscMod ^3v3.1.5";
+    level.originalBottomText = &"^1+ ^5BMXMOD ^3v4.0.0";
 
     if(!isDefined(game["gamestarted"])) {
         precacheString(level.topText);
@@ -313,7 +314,7 @@ _showMiscModHuds()
         bottomText setText(level.bottomText);
     }
 
-    level.miscmodversion = "^5MiscMod ^3v3.1.5";
+    level.miscmodversion = "^5BMXMOD ^3v4.0.0";
 }
 // ##########
 
