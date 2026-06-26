@@ -9,9 +9,10 @@ Based on [MiscMod by Cato](https://cod.pm/guide/d0da8d/installing-and-configurin
 ## HOW TO INSTALL
 
 Edit `codam/modlist.gsc`:
+```gsc
 level.topText = &"<your text>";
-
 [[ register ]]( "BMX_Mod", codam\miscmod::main );
+```
 
 The files `bmx_bans.dat` and `bmx_reports.dat` must be created in the main folder and be writeable by the server (or it will crash).
 
@@ -54,6 +55,8 @@ awk '$1~/^[0-9]+\./&&!ip[$1]++{print $0}' bmx_bans.backup.dat > bmx_bans.dat
 ## COMMANDS
 
 `<num>` can be replaced with a player name and will be matched by string.
+
+```
 Command:                                    Description:                                         Permission ID:
 !login <user> <pass>                        Login to access commands.                            0
 !help                                       Display available commands.                          1
@@ -84,7 +87,7 @@ Command:                                    Description:                        
 !re <message>                               Reply to last PM.                                    26
 !who                                        Show logged in admins.                               27
 !drop <num> (height)                        Drop a player.                                       28
-!prone <num> (time)                         Force a player to prone (spank).                     29
+!prone <num> (time)                         Force a player to prone.                             29
 !slap <num> (damage)                        Slap a player.                                       30
 !blind <num> (time)                         Blind a player.                                      31
 !runover <num>                              Run over a player with a tank.                       32
@@ -137,6 +140,7 @@ Command:                                    Description:                        
 !lagom <on|off>                             Toggle lagometer.                                    79
 !rules                                      Display server rules.                                80
 !discord                                    Display Discord link.                                81
+```
 
 ---
 
@@ -175,6 +179,8 @@ Command:                                    Description:                        
 - Fun admin commands based on Cheese's and PowerServer's commands
 - BEL menus based in part on code by Indy's endless menu
 - `scr_mm_scoreboard_text` uses code from Defected (dftd)
+
+---
 
 ## COMMUNITY
 
