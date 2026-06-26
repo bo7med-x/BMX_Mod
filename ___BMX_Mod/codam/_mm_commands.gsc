@@ -28,7 +28,7 @@ init()
     level.reportfile = "bmx_reports.dat";
 
     if(!isDefined(level.perms["default"]))
-        level.perms["default"] = codam\_mm_mmm::strTok("0-4:25:26", ":"); // pff xD
+        level.perms["default"] = codam\_mm_mmm::strTok("0-4:25:26:62:63:76-81", ":"); // Updated
 
     level.prefix = "!";
     if(getCvar("scr_mm_cmd_prefix") != "")
