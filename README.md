@@ -112,7 +112,7 @@ Command:                                    Description:                        
 !rifles <on|off|only>                       Toggle rifles.                                       51
 !disableweapon <weapon> <on|off>            Disable a specific weapon.                           52
 !health <off|0|1|2|3>                       Health settings.                                     53
-!grenade <off|0|1|2|3|reset>               Grenade settings.                                    54
+!grenade <off|0|1|2|3|reset>                Grenade settings.                                    54
 !pistols <on|off|reset>                     Pistol settings.                                     55
 !1sk <on|off>                               Toggle instant kill.                                 56
 !roundlength <time>                         Set round length. (sd|re)                            57
